@@ -1,13 +1,21 @@
+var users_online = [];
+
 jQuery(document).ready(function () {
 
     var socket = io('http://seqvirioum.com');
+
+    var ng_app = $('[ng-app="Chat"]');
+    var $scope = angular.element(ng_app).scope();
+
+    $scope.$apply(function(){
+        $scope.users = [];
+    }) 
 
     var nickColors = [
         '#e21400', '#91580f', '#f8a700', '#f78b00',
         '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
         '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
     ];
-
 
     $('body')
         .on('click', '#sign-in', function() {
@@ -44,16 +52,24 @@ jQuery(document).ready(function () {
     function placeMessage(element, text) {
 
     }
- 
-
+    
     socket.on('user-joined', function(data) {
         $('.output-section #messages').append("<div><p class='user-information'><span class='nick'>" + data.nick + "</span> has joined to chat</p></div>");
+        $scope.$apply(function() {
+            $scope.$$childHead.users.push(data.nick);
+        });
     })
 
     socket.on('show-chat', function(data) {
         $.when($('.sign_in_form').fadeOut('slow')).then(function() {
-            $('.chat').fadeIn('slow');        
+            $('.chat-content').fadeIn('slow');        
         })
+    })
+
+    socket.on('load-history', function(data) {
+        for (line in data.data) {
+            $('.output-section #messages').append("<div><p style='opacity: 0.5;'><span class='nick' style='color: " + data.data[line].color + "'>" + data.data[line].user + ":</span>" + data.data[line].message + "</p></div>");     
+        }
     })
 
     socket.on('append-text', function(data) {
@@ -62,6 +78,32 @@ jQuery(document).ready(function () {
 
     socket.on('user-left', function(data) {
         $('.output-section #messages').append("<div><p class='user-information'><span class='nick'>" + data.nick + "</span> has left the chat</p></div>");
+        
+        $scope.$apply(function() {
+            var index = $scope.$$childHead.users.indexOf(data.nick);
+            $scope.$$childHead.users.splice(index,1);
+        });
     })
 
 })
+
+
+angular.module('Chat', ['ngRoute'])
+    // .config(function($routeProvider) {
+    //   $routeProvider
+    //     .when('/', {
+    //       templateUrl:'html/sign.html'
+    //     })
+    //     .when('/chat', {
+    //       controller:'UsersOnlineController',
+    //       templateUrl:'html/chat.html'
+    //     })
+    //     .otherwise({
+    //       redirectTo:'/'
+    //     });
+    // })
+    
+    .controller('UsersOnlineController', ['$scope', function($scope) {
+        
+        $scope.users = [];
+    }]);
