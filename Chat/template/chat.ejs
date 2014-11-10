@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Chat">
+  <head>
+
+    <title>Chat</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-route.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    
+    <script src="js/chat.js"></script>
+    
+  </head>
+
+  <body>
+
+  <script>
+  // Function to return user's nickname
+    function getNick() {
+      return <%- nick %>;
+    }
+  </script>
+
+    
+    <div class="container">
+      <div class="chat-content">
+        <div class="navigation">
+          <ul class="menu">
+            <li class="active"> Chat </li>
+            <li> Users Online </li>
+            <li> My profile </li>
+          </ul>
+        </div>
+        <div class="chat">
+          <h1> Chat </h1>
+          <div class="output-section">
+            <div id="messages">
+            </div>
+            <div id="users-online-section">
+              <h3>Users online: </h3>
+              <div class="users-online" ng-controller="UsersOnlineController">
+                <!-- <p ng-repeat="user in users">{{user}}</p> -->
+                <!-- <p>{{users}}</p> -->
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="input-section">
+            <div class="form-group input-field">
+              <input type="text" class="form-control" id="input-text" placeholder="Place some text">
+              <button class="btn btn-success" id="send">Send</button>           
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+
+  </body>
+</html>

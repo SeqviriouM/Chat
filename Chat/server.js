@@ -37,7 +37,7 @@ var io = socket_io(server);
 
 
 app.get('/',function(req, res, next) {
-	res.render("sign", {});
+	res.render("login", {});
 })
 
 // Обработака get запроса
@@ -45,11 +45,15 @@ app.get('/sign',function(req, res, next) { })
 
 //Обработка post запроса
 app.post('/sign',function(req, res, next) { 
-  res.render("chat", {})
+  var nickname = req.body.nick;
+
+  res.render("chat", {nick: JSON.stringify(nickname)});
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+//Socket
 io.on('connection', function(socket){
   
   // Current user
@@ -63,7 +67,7 @@ io.on('connection', function(socket){
 
 
     // Show chat for current user
-    socket.emit('show-chat');
+    //socket.emit('show-chat');
     // Show the joined user for other users
 
 

@@ -28,7 +28,7 @@ a {
 }
 
 .chat-content {
-  display: none;
+/*  display: none;*/
 }
 
 .chat-content .navigation {
@@ -91,6 +91,7 @@ a {
 .chat #messages {
   width: 75%;
   float: left;
+  height: 399px;
   overflow: auto;
   padding: 10px 0px 10px 10px;
 }
