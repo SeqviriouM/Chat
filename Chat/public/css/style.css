@@ -31,15 +31,15 @@ a {
 /*  display: none;*/
 }
 
-.chat-content .navigation {
+.navigation {
   text-align: center;
 }
 
-.chat-content .navigation ul.menu {
+.navigation ul.menu {
 
 }
 
-.chat-content .navigation ul.menu li {
+.navigation ul.menu li {
   display: inline-block;
   background: lightblue;
   padding: 7px 15px;
@@ -48,7 +48,7 @@ a {
   border-radius: 10px;
 }
 
-.chat-content .navigation ul.menu li.active {
+.navigation ul.menu li.active {
   background: gold;
 }
 
@@ -122,4 +122,8 @@ a {
 
   font-weight: bold;
   font-size: 16px;
+}
+
+.users-online {
+  display: none;
 }
