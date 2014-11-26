@@ -1,0 +1,21 @@
+<div class="chat">
+  <h1> Chat </h1>
+  <div class="output-section">
+    <div id="messages">
+    </div>
+    <div id="users-online-section">
+      <h3>Users online: </h3>
+      <div class="users-online" ng-controller="UsersOnlineController">
+        <!-- <p ng-repeat="user in users">{{user}}</p> -->
+        <!-- <p>{{users}}</p> -->
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="input-section">
+    <div class="form-group input-field">
+      <input type="text" class="form-control" id="input-text" placeholder="Place some text">
+      <button class="btn btn-success" id="send">Send</button>           
+    </div>
+  </div>
+</div>

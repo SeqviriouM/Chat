@@ -41,13 +41,15 @@ app.get('/',function(req, res, next) {
 })
 
 // Обработака get запроса
-app.get('/sign',function(req, res, next) { })
+app.get('/sign',function(req, res, next) { 
+
+})
 
 //Обработка post запроса
 app.post('/sign',function(req, res, next) { 
   var nickname = req.body.nick;
 
-  res.render("chat", {nick: JSON.stringify(nickname)});
+  res.render("main", {nick: JSON.stringify(nickname)});
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -63,13 +65,6 @@ io.on('connection', function(socket){
     
     user.nick = data.nick;
     user.color = data.color;
-
-
-
-    // Show chat for current user
-    //socket.emit('show-chat');
-    // Show the joined user for other users
-
 
     //Get data from database
     var inform = Message.find({}, function(err, data) {
