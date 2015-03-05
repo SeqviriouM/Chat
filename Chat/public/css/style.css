@@ -35,6 +35,22 @@ a {
   text-align: center;
 }
 
+.navigation #console {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  padding: 5px 10px;
+  background: lightgray;
+  border-radius: 5px;
+  color: red;
+  opacity: 0;
+  text-decoration: none;
+}
+
+.navigation #console:hover {
+  opacity: 1;
+}
+
 .navigation ul.menu {
 
 }

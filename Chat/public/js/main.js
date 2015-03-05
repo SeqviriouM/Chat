@@ -19,6 +19,14 @@ jQuery(document).ready(function () {
 
 
     $('body')
+        // .on('click', '#sign-in', function() {
+        //     var nickname = $('#input-nickname').val();
+            
+        //     var nicknameColor = getNicknameColor();
+
+        //     socket.emit('new-user', {nick: nickname, color: nicknameColor});
+        // })
+
         .on('click', '#send', function() {
             var text = $("#input-text").val();
             //Strip html tags 
@@ -44,9 +52,6 @@ jQuery(document).ready(function () {
 
     function placeMessage(text) {
         $('.output-section #messages').append(text);
-        if ($('.chat').css('display') == "none") {
-            alert(text);
-        }
     }
 
     function scrollTop() {
@@ -55,19 +60,22 @@ jQuery(document).ready(function () {
     
     socket.on('load-history', function(data) {
         var text;
+
         for (line in data.data) {
-            text = "<div><p style='opacity: 0.5;'><span class='nick' style='color: " + data.data[line].color + "'>" + data.data[line].user + ":</span>" + data.data[line].message + "</p></div>";
-            placeMessage(text);     
+            text = "<div><p style='opacity: 0.5;'><span class='nick' style='color: " + data.data[line].color + "'>" + data.data[line].user + ":</span>" + data.data[line].message + "</p></div>";     
+            placeMessage(text);
         }
         scrollTop();
     });
 
     
     socket.on('user-joined', function(data) {
-        var text = "<div><p class='user-information'><span class='nick'>" + data.nick + "</span> has joined to chat</p></div>";
+        var text;
+        
+        text = "<div><p class='user-information'><span class='nick'>" + data.nick + "</span> has joined to chat</p></div>";
         placeMessage(text);
-        //$('.output-section #messages').append("<div><p class='user-information'><span class='nick'>" + data.nick + "</span> has joined to chat</p></div>");
         scrollTop();
+        
         
         $scope.$apply(function() {
             $scope.$$childHead.users.push(data.nick);
@@ -81,15 +89,17 @@ jQuery(document).ready(function () {
     });
 
     socket.on('append-text', function(data) {
-        var text = "<div><p><span class='nick' style='color: " + data.color + "'>" + data.nick + ":</span>" + data.text + "</p></div>";
+        var text;
+
+        text = "<div><p><span class='nick' style='color: " + data.color + "'>" + data.nick + ":</span>" + data.text + "</p></div>";
         placeMessage(text);
-        //$('.output-section #messages').append("<div><p><span class='nick' style='color: " + data.color + "'>" + data.nick + ":</span>" + data.text + "</p></div>");     
         scrollTop();
-        
     });
 
     socket.on('user-left', function(data) {
-        var text = "<div><p class='user-information'><span class='nick'>" + data.nick + "</span> has left the chat</p></div>";
+        var text; 
+
+        text = "<div><p class='user-information'><span class='nick'>" + data.nick + "</span> has left the chat</p></div>";
         placeMessage(text);
         scrollTop();
         
@@ -100,7 +110,6 @@ jQuery(document).ready(function () {
     });
 
 
-
     (function () {
         // Get nickname from chat.ejs. Function getNick declared in chat.ejs
         var nickname = getNick();  
@@ -109,30 +118,64 @@ jQuery(document).ready(function () {
         socket.emit('new-user', {nick: nickname, color: nicknameColor});
     })();
 
+
+    
+
+
+// })
 })
 
 
-angular.module('Chat', ['ngRoute'])
-    .config(function($routeProvider) {
-        //$locationProvider.html5Mode(true);
-        $routeProvider
-            .when('/chat', {
-              templateUrl:'../html/chat.html'
-            })
-            .when('/users_online', {
-              controller:'UsersOnlineController',
-              templateUrl:'../html/users_online.html'
-            })
-            .when('/profile', {
-              controller:'UsersOnlineController',
-              templateUrl:'../html/profile.html'
-            })
-            .otherwise({
-              redirectTo:'/chat'
-            });
-    })
+var app = angular.module('Chat', ['ngRoute', 'components', 'ngDialog']);
+
+app.config(function($routeProvider, ngDialogProvider) {
+    $routeProvider
+        .when('/chat', {
+          templateUrl:'../html/chat.html'
+        })
+        .when('/users_online', {
+          controller:'UsersOnlineController',
+          templateUrl:'../html/users_online.html'
+        })
+        .when('/profile', {
+          controller:'UsersOnlineController',
+          templateUrl:'../html/profile.html'
+        })
+        .otherwise({
+          redirectTo:'/chat'
+        });
+
+     ngDialogProvider.setDefaults({
+        className: 'ngdialog-theme-default',
+        plain: false,
+        showClose: true,
+        closeByDocument: true,
+        closeByEscape: true,
+        appendTo: false,
+        preCloseCallback: function () {
+          console.log('default pre-close callback');
+        }
+    });
+});
+
+app.controller('UsersOnlineController', ['$scope', function($scope) {
     
-    .controller('UsersOnlineController', ['$scope', function($scope) {
-        
-        $scope.users = [];
-    }]);
+    $scope.users = [];
+
+}]);
+
+app.controller('TopNavigation', ['$scope', 'ngDialog', function($scope, ngDialog) {
+    
+    $scope.openDialog = function(){
+        ngDialog.open({
+            template: 'rootConsole',
+            controller: 'rootConsoleController',
+            className: 'ngdialog-theme-default ngdialog-theme-custom'
+        })
+    }
+
+}]);
+
+app.controller('rootConsoleController', ['$scope',  function($scope){
+
+}]);
