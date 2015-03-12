@@ -67,13 +67,22 @@ io.on('connection', function(socket){
     user.color = data.color;
 
     //Get data from database
-    var inform = Message.find({}, function(err, data) {
-      //console.log(data);
-      // socket.broadcast.emit('user-joined', {nick: user.nick});
-      socket.emit('load-history', {data: data})
+    var inform = Message.find().sort({'_id': -1}).skip(0).limit(20).exec(function(err, data) {
+      socket.emit('load-history', {data: data});
     })
+    // var inform = Message.find({}, function(err, data) {
+    //   //console.log(data);
+    //   // socket.broadcast.emit('user-joined', {nick: user.nick});
+    //   socket.emit('load-history', {data: data})
+    // })
 
     socket.broadcast.emit('user-joined', {nick: user.nick})
+  })
+
+  socket.on('early-history', function(data) {
+    var inform = Message.find().sort({'_id': -1}).skip(data.skip).limit(20).exec(function(err, data) {
+      socket.emit('load-history', {data: data});
+    })
   })
 
   socket.on('new-message', function(data) {
@@ -97,6 +106,11 @@ io.on('connection', function(socket){
       // Show that current user has left the chat
       socket.broadcast.emit('user-left', {nick: user.nick}); 
     }
+  })
+
+  socket.on('kick-user', function(data) {
+    console.log(data);
+    socket.disconnect();
   })
 })
 

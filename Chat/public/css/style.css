@@ -104,7 +104,7 @@ a {
   overflow: auto;
 }
 
-.chat #messages {
+.chat #messages-area {
   width: 75%;
   float: left;
   height: 399px;
@@ -125,7 +125,21 @@ a {
   font-size: 20px;
 }
 
-.chat .output-section #messages .user-information {
+.chat .output-section #messages-area .load-more-wrapper {
+  padding: 12px;
+  background: rgba(231, 233, 235, 1);
+  margin-left: -10px;
+  margin-top: -10px;
+  text-align: center;  
+}
+
+.chat .output-section #messages-area .load-more-wrapper > a.load-more-messages {
+  color: darkblue;
+  font-weight: bold;  
+  text-decoration: none;
+}
+
+.chat .output-section #messages-area #messages .user-information {
   font-size: 14px;
   font-style: italic;
   text-align: center;
@@ -133,7 +147,54 @@ a {
   color: rgb(139, 139, 139);
 }
 
-.chat .output-section #messages span.nick {
+.chat .output-section #messages-area #messages .message {
+  margin: 15px 10px;
+  position: relative;
+}
+
+.chat .output-section #messages-area #messages .message.history {
+  opacity: 0.7;
+}
+
+.chat .output-section #messages-area #messages .message .nick {
+  width: 40px;
+  height: 40px;
+  float: left;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  color: black;
+  overflow: hidden;
+  border: 1px solid #dde0e3;
+  background: #dde0e3;
+  border-color: lightgray;
+  font-weight: bold;
+}
+
+.chat .output-section #messages-area #messages .message .text {
+  margin-left: 70px;
+  min-height: 40px;
+  border-radius: 7px 7px 7px 7px;
+  padding: 10px;
+  border: 1px solid #dde0e3;
+}
+
+.chat .output-section #messages-area #messages .message .text:before {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #E7E9EB;
+  display: block;
+  width: 0;
+  z-index: 1;
+  left: 60px;
+  top: 10px;
+}
+
+
+.chat .output-section #messages-area #messages span.nick {
   padding-right: 10px;
 
   font-weight: bold;
@@ -142,4 +203,26 @@ a {
 
 .users-online {
   display: none;
+}
+
+
+
+
+
+.root-console ul.users {
+  padding-left: 0;
+}
+.root-console ul.users li {
+  list-style-type: none;
+  background: rgb(200, 200, 200);
+  padding: 5px 10px;
+  margin: 7px 0;
+  border-radius: 5px;
+}
+.root-console ul.users li .nick {
+  float: left;
+  padding-top: 3px;
+}
+.root-console ul.users li .actions{
+  float: right;
 }
